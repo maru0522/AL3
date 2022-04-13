@@ -8,7 +8,6 @@ GameScene::GameScene() {}
 
 GameScene::~GameScene() {
 	delete model_;
-	delete sprite_;
 }
 
 void GameScene::Initialize() {
@@ -20,8 +19,13 @@ void GameScene::Initialize() {
 
 	// ファイル名を指定してテクスチャを読み込む
 	textureHandle_ = TextureManager::Load("Task1_2Resources/mario.jpg");
-	// サウンドデータの読み込み
-	soundDataHandle_ = audio_->LoadWave("Task1_2Resources/se_sad03.wav");
+
+	// X, Y, Z 方向のスケーリングを設定
+	worldTransform_.scale_ = { 5.0f,5.0f,5.0f };
+	// X, Y, Z 軸周りの回転角を設定
+	worldTransform_.rotation_ = { XMConvertToRadians(45.0f),XMConvertToRadians(45.0f),XMConvertToRadians(0.0f) };
+	// X, Y, Z 軸周りの平行移動を設定
+	worldTransform_.translation_ = { 10.0f,10.0f,10.0f };
 
 #pragma region モデル部分
 
@@ -33,46 +37,9 @@ void GameScene::Initialize() {
 	viewProjection_.Initialize();
 
 #pragma endregion
-
-#pragma region スプライト部分
-
-	// スプライトの生成
-	sprite_ = Sprite::Create(textureHandle_, { 0,0 });
-
-#pragma endregion
-
-#pragma region サウンド部分
-
-	// 音声再生
-	audio_->PlayWave(soundDataHandle_);
-	voiceHandle_ = audio_->PlayWave(soundDataHandle_, true);
-
-#pragma endregion
 }
 
-void GameScene::Update() {
-	// スプライトの今の座標を取得
-	XMFLOAT2 position = sprite_->GetPosition();
-	// 座標{2,0}移動
-	position.x += 2.0f;
-	position.y += 1.0f;
-	// 移動した座標をスプライトに反映
-	sprite_->SetPosition(position);
-
-
-	// スペースキーを押した瞬間
-	if (input_->TriggerKey(DIK_SPACE)) {
-		//音声停止
-		audio_->StopWave(voiceHandle_);
-	}
-
-	// 変数の値をインクリメント
-	value_++;
-	// 値を含んだ文字列
-	std::string strDebug = std::string("value:") + std::to_string(value_);
-	// デバッグテキストの表示
-	debugText_->Print(strDebug, 50, 50, 1.0f);
-}
+void GameScene::Update() {}
 
 void GameScene::Draw() {
 
@@ -113,10 +80,7 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
-	sprite_->Draw();
-	// デバッグテキストの描画
-	debugText_->DrawAll(commandList);
-	//
+
 	// スプライト描画後処理
 	Sprite::PostDraw();
 

@@ -46,7 +46,7 @@ void GameScene::Update() {
 	// 値を含んだ文字列
 	std::string strDebug = std::string("Value:") + std::to_string(value_);
 	// デバッグテキストの表示
-	debugText_->Print(strDebug, 50, 50, 1.0f);
+	debugText_->Print(strDebug, 50, 150, 1.0f);
 }
 
 void GameScene::Draw() {

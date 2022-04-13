@@ -48,6 +48,44 @@ class GameScene {
 	Audio* audio_ = nullptr;
 	DebugText* debugText_ = nullptr;
 
+	// テクスチャハンドル
+	uint32_t textureHandle_ = 0;
+
+#pragma region モデル部分
+
+	// 3Dモデル
+	Model* model_ = nullptr;
+	// ワールドトランスフォーム
+	WorldTransform worldTransform_;
+	// ビュープロジェクション
+	ViewProjection viewProjection_;
+
+#pragma endregion
+
+#pragma region スプライト部分
+
+	// スプライト
+	Sprite* sprite_ = nullptr;
+
+#pragma endregion
+
+#pragma region サウンド部分
+
+	// サウンドデータハンドル
+	uint32_t soundDataHandle_ = 0;
+
+	// 音声再生ハンドル
+	uint32_t voiceHandle_ = 0;
+
+#pragma endregion
+
+#pragma region 変数部分
+
+	// 値を表示したい変数
+	int32_t value_ = 0;
+
+#pragma endregion
+
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>

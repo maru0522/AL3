@@ -21,11 +21,11 @@ void GameScene::Initialize() {
 	textureHandle_ = TextureManager::Load("Task1_2Resources/mario.jpg");
 
 	// X, Y, Z 方向のスケーリングを設定
-	worldTransform_.scale_ = { 5.0f,5.0f,5.0f };
+	worldTransform_.scale_ = { scaleValX_,scaleValY_,scaleValZ_ };
 	// X, Y, Z 軸周りの回転角を設定
-	worldTransform_.rotation_ = { XMConvertToRadians(45.0f),XMConvertToRadians(45.0f),XMConvertToRadians(0.0f) };
+	worldTransform_.rotation_ = { rotationValX_,rotationValY_,rotationValZ_ };
 	// X, Y, Z 軸周りの平行移動を設定
-	worldTransform_.translation_ = { 10.0f,10.0f,10.0f };
+	worldTransform_.translation_ = { 0.0f,0.0f,0.0f};
 
 #pragma region モデル部分
 
@@ -39,7 +39,28 @@ void GameScene::Initialize() {
 #pragma endregion
 }
 
-void GameScene::Update() {}
+void GameScene::Update() {
+
+	//変数の値をインクリメント
+	value_++;
+	// 値を含んだ文字列
+	std::string strDebug = std::string("Value:") + std::to_string(value_);
+	// デバッグテキストの表示
+	debugText_->Print(strDebug, 50, 150, 1.0f);
+
+	// 値を含んだ文字列
+	std::string transStrDebug = std::string("translation:( ") +
+		std::to_string(translationValX_); /*+
+		std::string(", ") +
+		std::to_string(translationValY_) +
+		std::string(", ") +
+		std::to_string(translationValZ_) +
+		std::string(")");*/
+
+
+	// デバッグテキストの表示
+	debugText_->Print(transStrDebug, 50, 50, 1.0f);
+}
 
 void GameScene::Draw() {
 

@@ -25,7 +25,7 @@ void GameScene::Initialize() {
 	// X, Y, Z 軸周りの回転角を設定
 	worldTransform_.rotation_ = { rotationValX_,rotationValY_,rotationValZ_ };
 	// X, Y, Z 軸周りの平行移動を設定
-	worldTransform_.translation_ = { 0.0f,0.0f,0.0f};
+	worldTransform_.translation_ = { translationValX_,translationValY_,translationValZ_ };
 
 #pragma region モデル部分
 
@@ -41,25 +41,53 @@ void GameScene::Initialize() {
 
 void GameScene::Update() {
 
-	//変数の値をインクリメント
-	value_++;
-	// 値を含んだ文字列
-	std::string strDebug = std::string("Value:") + std::to_string(value_);
-	// デバッグテキストの表示
-	debugText_->Print(strDebug, 50, 150, 1.0f);
+#pragma region translation debug string
 
 	// 値を含んだ文字列
-	std::string transStrDebug = std::string("translation:( ") +
-		std::to_string(translationValX_); /*+
+	std::string transStrDebug = std::string("translation:(") +
+		std::to_string(translationValX_) +
 		std::string(", ") +
 		std::to_string(translationValY_) +
 		std::string(", ") +
 		std::to_string(translationValZ_) +
-		std::string(")");*/
-
+		std::string(")");
 
 	// デバッグテキストの表示
 	debugText_->Print(transStrDebug, 50, 50, 1.0f);
+
+#pragma endregion
+
+#pragma region rotation debug string
+
+	// 値を含んだ文字列
+	std::string rotStrDebug = std::string("rotation:(") +
+		std::to_string(rotationValX_) +
+		std::string(", ") +
+		std::to_string(rotationValY_) +
+		std::string(", ") +
+		std::to_string(rotationValZ_) +
+		std::string(")");
+
+	// デバッグテキストの表示
+	debugText_->Print(rotStrDebug, 50, 80, 1.0f);
+
+#pragma endregion
+
+#pragma region scale debug string
+
+	// 値を含んだ文字列
+	std::string scaleStrDebug = std::string("scale:(") +
+		std::to_string(scaleValX_) +
+		std::string(", ") +
+		std::to_string(scaleValY_) +
+		std::string(", ") +
+		std::to_string(scaleValZ_) +
+		std::string(")");
+
+	// デバッグテキストの表示
+	debugText_->Print(scaleStrDebug, 50, 110, 1.0f);
+
+#pragma endregion
 }
 
 void GameScene::Draw() {
@@ -101,6 +129,9 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
+
+	// デバッグテキストの描画
+	debugText_->DrawAll(commandList);
 
 	// スプライト描画後処理
 	Sprite::PostDraw();

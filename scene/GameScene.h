@@ -51,11 +51,18 @@ class GameScene {
 	// テクスチャハンドル
 	uint32_t textureHandle_ = 0;
 
+#pragma region モデル部分
+
+	// 3Dモデル
+	Model* model_ = nullptr;
+	// ワールドトランスフォーム
+	WorldTransform worldTransform_;
+	// ビュープロジェクション
+	ViewProjection viewProjection_;
+
+#pragma endregion
+
 #pragma region デバッグテキスト部分
-
-	//test
-	int32_t value_ = 0;
-
 
 	float translationValX_ = 10.0f;
 	float translationValY_ = 10.0f;
@@ -68,17 +75,6 @@ class GameScene {
 	float scaleValX_ = 5.0f;
 	float scaleValY_ = 5.0f;
 	float scaleValZ_ = 5.0f;
-
-#pragma endregion
-
-#pragma region モデル部分
-
-	// 3Dモデル
-	Model* model_ = nullptr;
-	// ワールドトランスフォーム
-	WorldTransform worldTransform_;
-	// ビュープロジェクション
-	ViewProjection viewProjection_;
 
 #pragma endregion
 

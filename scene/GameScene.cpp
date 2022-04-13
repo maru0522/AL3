@@ -14,9 +14,40 @@ void GameScene::Initialize() {
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
 	debugText_ = DebugText::GetInstance();
+
+	// サウンドデータの読み込み
+	soundDataHandle_ = audio_->LoadWave("Task1_2Resources/se_sad03.wav");
+
+	// 音声再生
+	audio_->PlayWave(soundDataHandle_);
+
+
+	// 音声再生
+	voiceHandle_ = audio_->PlayWave(soundDataHandle_, true);
 }
 
-void GameScene::Update() {}
+void GameScene::Update() {
+	// スペースキーを押した瞬間
+	if (input_->TriggerKey(DIK_SPACE)) {
+		// 音声停止
+		audio_->StopWave(voiceHandle_);
+	}
+
+	// デバッグテキストの表示
+	debugText_->Print("Kaizokuou ni oreha naru", 50, 50, 1.0f);
+	
+	// 書式指定月表示
+	debugText_->SetPos(50, 70);
+	debugText_->Printf("year:%d", 2001);
+
+
+	// 変数の値をインクリメント
+	value_++;
+	// 値を含んだ文字列
+	std::string strDebug = std::string("Value:") + std::to_string(value_);
+	// デバッグテキストの表示
+	debugText_->Print(strDebug, 50, 50, 1.0f);
+}
 
 void GameScene::Draw() {
 

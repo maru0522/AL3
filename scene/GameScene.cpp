@@ -53,10 +53,10 @@ void GameScene::Initialize() {
 
 
 	// カメラ垂直方向視野角を設定
-	viewProjection_.fovAngleY = XMConvertToRadians(40.0f);
+	viewProjection_.fovAngleY = XMConvertToRadians(45.0f);
 
 	// アスペクト比を設定
-	viewProjection_.aspectRatio = 1.0f;
+	//viewProjection_.aspectRatio = 1.0f;
 
 
 	// ニアクリップ距離を設定
@@ -101,7 +101,7 @@ void GameScene::Update() {
 
 
 	// 注視点移動処理
-	//{
+	{
 	//	// 注視点の移動ベクトル
 	//	XMFLOAT3 move = { 0,0,0 };
 
@@ -124,14 +124,14 @@ void GameScene::Update() {
 	//	//行列の再計算
 	//	viewProjection_.UpdateMatrix();
 
-	//	// デバッグ用表示
-	//	debugText_->SetPos(50, 70);
-	//	debugText_->Printf("target:(%f,%f,%f", viewProjection_.target.x, viewProjection_.target.y, viewProjection_.target.z);
-	//}
+		// デバッグ用表示
+		debugText_->SetPos(50, 70);
+		debugText_->Printf("target:(%f,%f,%f", viewProjection_.target.x, viewProjection_.target.y, viewProjection_.target.z);
+	}
 
 
 	// 上方向回転処理
-	//{
+	{
 	//	// 上方向の回転速度[ラジアン/frame]
 	//	const float kUpRotSpeed = 0.05f;
 
@@ -148,21 +148,21 @@ void GameScene::Update() {
 	//	// 行列の再計算
 	//	viewProjection_.UpdateMatrix();
 
-	//	// デバッグ用表示
-	//	debugText_->SetPos(50, 90);
-	//	debugText_->Printf("up:(%f,%f,%f)", viewProjection_.up.x, viewProjection_.up.y, viewProjection_.up.z);
-	//}
+		// デバッグ用表示
+		debugText_->SetPos(50, 90);
+		debugText_->Printf("up:(%f,%f,%f)", viewProjection_.up.x, viewProjection_.up.y, viewProjection_.up.z);
+	}
 
 
 	// FoV変更処理
 	{
 		// 上キー視野角が広がる
-		if (input_->PushKey(DIK_UP)) {
+		if (input_->PushKey(DIK_W)) {
 			viewProjection_.fovAngleY += 0.01f;
 			viewProjection_.fovAngleY = min(viewProjection_.fovAngleY, XM_PI);
 		}
 		// 下キーで視野角が狭まる
-		else if (input_->PushKey(DIK_DOWN)) {
+		else if (input_->PushKey(DIK_S)) {
 			viewProjection_.fovAngleY -= 0.01f;
 			viewProjection_.fovAngleY = max(viewProjection_.fovAngleY, 0.01f);
 		}

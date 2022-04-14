@@ -50,7 +50,7 @@ void GameScene::Initialize() {
 
 
 	// カメラ始点座標を設定
-	viewProjection_.eye = { 0,0,-10 };
+	viewProjection_.eye = { 0,0,-50 };
 
 	// カメラ注視始点座標を設定
 	viewProjection_.target = { 10,0,0 };

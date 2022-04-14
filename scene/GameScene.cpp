@@ -86,6 +86,7 @@ void GameScene::Initialize() {
 	//viewProjection_.aspectRatio = 1.0f;
 
 
+
 	// ニアクリップ距離を設定
 	//viewProjection_.nearZ = 52.0f;
 

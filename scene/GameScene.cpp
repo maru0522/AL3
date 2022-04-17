@@ -33,93 +33,17 @@ void GameScene::Initialize() {
 			// ワールドトランスフォームの初期化
 			worldTransform_[i].Initialize();
 		}
+		else if (i >= 9) {
+			// X, Y, Z 方向のスケーリングを設定
+			worldTransform_[i].scale_ = { scaleValX_,scaleValY_,scaleValZ_ };
+			// X, Y, Z 軸周りの回転角を設定
+			worldTransform_[i].rotation_ = { 0.0f,0.0f,0.0f };
+			// X, Y, Z 軸周りの平行移動を設定
+			worldTransform_[i].translation_ = { -130.0f + i * 10,-20.0f,0.0f };
+			// ワールドトランスフォームの初期化
+			worldTransform_[i].Initialize();
+		}
 	}
-
-#pragma endregion
-
-
-#pragma region 下方向 [9] ~ [17]
-
-	// X, Y, Z 方向のスケーリングを設定
-	worldTransform_[9].scale_ = { scaleValX_,scaleValY_,scaleValZ_ };
-	// X, Y, Z 軸周りの回転角を設定
-	worldTransform_[9].rotation_ = { 0.0f,0.0f,0.0f };
-	// X, Y, Z 軸周りの平行移動を設定
-	worldTransform_[9].translation_ = { -40.0f,-20.0f,0.0f };
-	// ワールドトランスフォームの初期化
-	worldTransform_[9].Initialize();
-
-	// X, Y, Z 方向のスケーリングを設定
-	worldTransform_[10].scale_ = { scaleValX_,scaleValY_,scaleValZ_ };
-	// X, Y, Z 軸周りの回転角を設定
-	worldTransform_[10].rotation_ = { 0.0f,0.0f,0.0f };
-	// X, Y, Z 軸周りの平行移動を設定
-	worldTransform_[10].translation_ = { -40.0f + 10,-20.0f,0.0f };
-	// ワールドトランスフォームの初期化
-	worldTransform_[10].Initialize();
-
-	// X, Y, Z 方向のスケーリングを設定
-	worldTransform_[11].scale_ = { scaleValX_,scaleValY_,scaleValZ_ };
-	// X, Y, Z 軸周りの回転角を設定
-	worldTransform_[11].rotation_ = { 0.0f,0.0f,0.0f };
-	// X, Y, Z 軸周りの平行移動を設定
-	worldTransform_[11].translation_ = { -40.0f + 20,-20.0f,0.0f };
-	// ワールドトランスフォームの初期化
-	worldTransform_[11].Initialize();
-
-	// X, Y, Z 方向のスケーリングを設定
-	worldTransform_[12].scale_ = { scaleValX_,scaleValY_,scaleValZ_ };
-	// X, Y, Z 軸周りの回転角を設定
-	worldTransform_[12].rotation_ = { 0.0f,0.0f,0.0f };
-	// X, Y, Z 軸周りの平行移動を設定
-	worldTransform_[12].translation_ = { -40.0f + 30,-20.0f,0.0f };
-	// ワールドトランスフォームの初期化
-	worldTransform_[12].Initialize();
-
-	// X, Y, Z 方向のスケーリングを設定
-	worldTransform_[13].scale_ = { scaleValX_,scaleValY_,scaleValZ_ };
-	// X, Y, Z 軸周りの回転角を設定
-	worldTransform_[13].rotation_ = { 0.0f,0.0f,0.0f };
-	// X, Y, Z 軸周りの平行移動を設定
-	worldTransform_[13].translation_ = { -40.0f + 40,-20.0f,0.0f };
-	// ワールドトランスフォームの初期化
-	worldTransform_[13].Initialize();
-
-	// X, Y, Z 方向のスケーリングを設定
-	worldTransform_[14].scale_ = { scaleValX_,scaleValY_,scaleValZ_ };
-	// X, Y, Z 軸周りの回転角を設定
-	worldTransform_[14].rotation_ = { 0.0f,0.0f,0.0f };
-	// X, Y, Z 軸周りの平行移動を設定
-	worldTransform_[14].translation_ = { -40.0f + 50,-20.0f,0.0f };
-	// ワールドトランスフォームの初期化
-	worldTransform_[14].Initialize();
-
-	// X, Y, Z 方向のスケーリングを設定
-	worldTransform_[15].scale_ = { scaleValX_,scaleValY_,scaleValZ_ };
-	// X, Y, Z 軸周りの回転角を設定
-	worldTransform_[15].rotation_ = { 0.0f,0.0f,0.0f };
-	// X, Y, Z 軸周りの平行移動を設定
-	worldTransform_[15].translation_ = { -40.0f + 60,-20.0f,0.0f };
-	// ワールドトランスフォームの初期化
-	worldTransform_[15].Initialize();
-
-	// X, Y, Z 方向のスケーリングを設定
-	worldTransform_[16].scale_ = { scaleValX_,scaleValY_,scaleValZ_ };
-	// X, Y, Z 軸周りの回転角を設定
-	worldTransform_[16].rotation_ = { 0.0f,0.0f,0.0f };
-	// X, Y, Z 軸周りの平行移動を設定
-	worldTransform_[16].translation_ = { -40.0f + 70,-20.0f,0.0f };
-	// ワールドトランスフォームの初期化
-	worldTransform_[16].Initialize();
-
-	// X, Y, Z 方向のスケーリングを設定
-	worldTransform_[17].scale_ = { scaleValX_,scaleValY_,scaleValZ_ };
-	// X, Y, Z 軸周りの回転角を設定
-	worldTransform_[17].rotation_ = { 0.0f,0.0f,0.0f };
-	// X, Y, Z 軸周りの平行移動を設定
-	worldTransform_[17].translation_ = { -40.0f + 80,-20.0f,0.0f };
-	// ワールドトランスフォームの初期化
-	worldTransform_[17].Initialize();
 
 #pragma endregion
 

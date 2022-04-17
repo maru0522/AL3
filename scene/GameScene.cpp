@@ -22,30 +22,47 @@ void GameScene::Initialize() {
 
 #pragma region 上部分 [0] ~ [8]
 
-	for (size_t i = 0; i < _countof(worldTransform_); i++) {
-		if (i <= 8) {
-			// X, Y, Z 方向のスケーリングを設定
-			worldTransform_[i].scale_ = { scaleValX_,scaleValY_,scaleValZ_ };
-			// X, Y, Z 軸周りの回転角を設定
-			worldTransform_[i].rotation_ = { 0.0f,0.0f,0.0f };
-			// X, Y, Z 軸周りの平行移動を設定
-			worldTransform_[i].translation_ = { -40.0f + i*10,20.0f,0.0f };
-			// ワールドトランスフォームの初期化
-			worldTransform_[i].Initialize();
-		}
-		else if (i >= 9) {
-			// X, Y, Z 方向のスケーリングを設定
-			worldTransform_[i].scale_ = { scaleValX_,scaleValY_,scaleValZ_ };
-			// X, Y, Z 軸周りの回転角を設定
-			worldTransform_[i].rotation_ = { 0.0f,0.0f,0.0f };
-			// X, Y, Z 軸周りの平行移動を設定
-			worldTransform_[i].translation_ = { -130.0f + i * 10,-20.0f,0.0f };
-			// ワールドトランスフォームの初期化
-			worldTransform_[i].Initialize();
+	for (size_t y = 0; y < sizeof(worldTransform_) / sizeof(worldTransform_[0]); y++) {
+		for (size_t x = 0; x < sizeof(worldTransform_[0]) / sizeof(worldTransform_[0][0]); x++) {
+			if (y % 2 == 1) {
+				if (x % 2 == 1) {
+					// X, Y, Z 方向のスケーリングを設定
+					worldTransform_[y][x].scale_ = {0.0f, 0.0f, 0.0f};
+					// X, Y, Z 軸周りの回転角を設定
+					worldTransform_[y][x].rotation_ = { 0.0f, 0.0f, 0.0f };
+					// X, Y, Z 軸周りの平行移動を設定
+					worldTransform_[y][x].translation_ = { -12.0f + x * 3, 12.0f - y * 3, 0.0f };
+					// ワールドトランスフォームの初期化
+					worldTransform_[y][x].Initialize();
+				}
+				else {
+					// X, Y, Z 方向のスケーリングを設定
+					worldTransform_[y][x].scale_ = { 1.0f,1.0f,1.0f };
+					// X, Y, Z 軸周りの回転角を設定
+					worldTransform_[y][x].rotation_ = { 0.0f,0.0f,0.0f };
+					// X, Y, Z 軸周りの平行移動を設定
+					worldTransform_[y][x].translation_ = { -12.0f + x * 3 ,12.0f - y * 3, 0.0f };
+					// ワールドトランスフォームの初期化
+					worldTransform_[y][x].Initialize();
+				}
+			}
+			else {
+				// X, Y, Z 方向のスケーリングを設定
+				worldTransform_[y][x].scale_ = { 1.0f,1.0f,1.0f };
+				// X, Y, Z 軸周りの回転角を設定
+				worldTransform_[y][x].rotation_ = { 0.0f,0.0f,0.0f };
+				// X, Y, Z 軸周りの平行移動を設定
+				worldTransform_[y][x].translation_ = { -12.0f + x * 3 ,12.0f - y * 3, 0.0f };
+				// ワールドトランスフォームの初期化
+				worldTransform_[y][x].Initialize();
+			}
 		}
 	}
 
 #pragma endregion
+
+	// カメラ始点座標を設定
+	viewProjection_.eye = { 0,0,-40 };
 
 #pragma region モデル部分
 
@@ -135,10 +152,11 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
-	for (size_t i = 0; i < _countof(worldTransform_); i++) {
-		model_->Draw(worldTransform_[i], viewProjection_, textureHandle_);
+	for (size_t y = 0; y < sizeof(worldTransform_) / sizeof(worldTransform_[0]); y++) {
+		for (size_t x = 0; x < sizeof(worldTransform_[0]) / sizeof(worldTransform_[0][0]); x++) {
+			model_->Draw(worldTransform_[y][x], viewProjection_, textureHandle_);
+		}
 	}
-
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();

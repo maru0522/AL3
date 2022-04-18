@@ -24,45 +24,23 @@ void GameScene::Initialize() {
 
 	for (size_t y = 0; y < sizeof(worldTransform_) / sizeof(worldTransform_[0]); y++) {
 		for (size_t x = 0; x < sizeof(worldTransform_[0]) / sizeof(worldTransform_[0][0]); x++) {
-			if (y % 2 == 1) {
-				if (x % 2 == 1) {
-					// X, Y, Z 方向のスケーリングを設定
-					worldTransform_[y][x].scale_ = {0.0f, 0.0f, 0.0f};
-					// X, Y, Z 軸周りの回転角を設定
-					worldTransform_[y][x].rotation_ = { 0.0f, 0.0f, 0.0f };
-					// X, Y, Z 軸周りの平行移動を設定
-					worldTransform_[y][x].translation_ = { -12.0f + x * 3, 12.0f - y * 3, 0.0f };
-					// ワールドトランスフォームの初期化
-					worldTransform_[y][x].Initialize();
-				}
-				else {
-					// X, Y, Z 方向のスケーリングを設定
-					worldTransform_[y][x].scale_ = { 1.0f,1.0f,1.0f };
-					// X, Y, Z 軸周りの回転角を設定
-					worldTransform_[y][x].rotation_ = { 0.0f,0.0f,0.0f };
-					// X, Y, Z 軸周りの平行移動を設定
-					worldTransform_[y][x].translation_ = { -12.0f + x * 3 ,12.0f - y * 3, 0.0f };
-					// ワールドトランスフォームの初期化
-					worldTransform_[y][x].Initialize();
-				}
-			}
-			else {
-				// X, Y, Z 方向のスケーリングを設定
-				worldTransform_[y][x].scale_ = { 1.0f,1.0f,1.0f };
-				// X, Y, Z 軸周りの回転角を設定
-				worldTransform_[y][x].rotation_ = { 0.0f,0.0f,0.0f };
-				// X, Y, Z 軸周りの平行移動を設定
-				worldTransform_[y][x].translation_ = { -12.0f + x * 3 ,12.0f - y * 3, 0.0f };
-				// ワールドトランスフォームの初期化
-				worldTransform_[y][x].Initialize();
-			}
+			for (size_t z = 0; z < sizeof(worldTransform_[0][0]) / sizeof(worldTransform_[0][0][0]); z++) {
+			// X, Y, Z 方向のスケーリングを設定
+			worldTransform_[y][x][z].scale_ = { 1.0f, 1.0f, 1.0f };
+			// X, Y, Z 軸周りの回転角を設定
+			worldTransform_[y][x][z].rotation_ = {0.0f, 0.0f, 0.0f};
+			// X, Y, Z 軸周りの平行移動を設定
+			worldTransform_[y][x][z].translation_ = {-12.0f + x * 3, 12.0f - y * 3, 0.0f - z * 3};
+			// ワールドトランスフォームの初期化
+			worldTransform_[y][x][z].Initialize();
+		}
 		}
 	}
 
 #pragma endregion
 
 	// カメラ始点座標を設定
-	viewProjection_.eye = { 0,0,-40 };
+	viewProjection_.eye = { 0,0,-60 };
 
 #pragma region モデル部分
 
@@ -154,7 +132,9 @@ void GameScene::Draw() {
 	/// </summary>
 	for (size_t y = 0; y < sizeof(worldTransform_) / sizeof(worldTransform_[0]); y++) {
 		for (size_t x = 0; x < sizeof(worldTransform_[0]) / sizeof(worldTransform_[0][0]); x++) {
-			model_->Draw(worldTransform_[y][x], viewProjection_, textureHandle_);
+			for (size_t z = 0; z < sizeof(worldTransform_[0][0]) / sizeof(worldTransform_[0][0][0]); z++) {
+				model_->Draw(worldTransform_[y][x][z], viewProjection_, textureHandle_);
+			}
 		}
 	}
 

@@ -58,23 +58,25 @@ class GameScene {
 	// ワールドトランスフォーム
 	WorldTransform worldTransform_;
 	// ビュープロジェクション
-	ViewProjection viewProjection_;
+	ViewProjection viewProjection_[3];
 
 #pragma endregion
 
 #pragma region デバッグテキスト部分
 
-	float translationValX_ = 10.0f;
-	float translationValY_ = 10.0f;
-	float translationValZ_ = 10.0f;
+	float eyePosX_[3] = {0.0f,0.0f,0.0f};
+	float eyePosY_[3] = {0.0f,0.0f,0.0f};
+	float eyePosZ_[3] = {0.0f,0.0f,0.0f};
 
-	float rotationValX_ = 0.785398f;
-	float rotationValY_ = 0.785398f;
-	float rotationValZ_ = 0.0f;
+	float targetPosX_[3] = {0.0f,0.0f,0.0f};
+	float targetPosY_[3] = {0.0f,0.0f,0.0f};
+	float targetPosZ_[3] = {0.0f,0.0f,0.0f};
 
-	float scaleValX_ = 5.0f;
-	float scaleValY_ = 5.0f;
-	float scaleValZ_ = 5.0f;
+	float upPosX_[3] = { 0.0f,0.0f,0.0f };
+	float upPosY_[3] = { 1.0f,1.0f,1.0f };
+	float upPosZ_[3] = { 0.0f,0.0f,0.0f };
+
+	uint32_t cameraNum = 0;
 
 #pragma endregion
 

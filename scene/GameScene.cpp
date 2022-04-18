@@ -1,6 +1,7 @@
 ﻿#include "GameScene.h"
 #include "TextureManager.h"
 #include <cassert>
+#include <random>
 
 using namespace DirectX;
 
@@ -17,15 +18,24 @@ void GameScene::Initialize() {
 	audio_ = Audio::GetInstance();
 	debugText_ = DebugText::GetInstance();
 
+
+	// 乱数シード生成器
+	std::random_device seed_gen;
+	// メルセンヌ・ツイスター
+	std::mt19937_64 engin(seed_gen());
+	// 乱数範囲(座標用)
+	std::uniform_real_distribution<float> posDist(-10.0f, 10.0f);
+
+
 	// ファイル名を指定してテクスチャを読み込む
 	textureHandle_ = TextureManager::Load("Task1_2Resources/mario.jpg");
 
 	// X, Y, Z 方向のスケーリングを設定
-	worldTransform_.scale_ = { scaleValX_,scaleValY_,scaleValZ_ };
+	worldTransform_.scale_ = { 1.0f,1.0f,1.0f };
 	// X, Y, Z 軸周りの回転角を設定
-	worldTransform_.rotation_ = { rotationValX_,rotationValY_,rotationValZ_ };
+	worldTransform_.rotation_ = { 0.0f,0.0f,0.0f };
 	// X, Y, Z 軸周りの平行移動を設定
-	worldTransform_.translation_ = { translationValX_,translationValY_,translationValZ_ };
+	worldTransform_.translation_ = { 0.0f,0.0f,0.0f };
 
 #pragma region モデル部分
 
@@ -33,59 +43,79 @@ void GameScene::Initialize() {
 	model_ = Model::Create();
 	// ワールドトランスフォームの初期化
 	worldTransform_.Initialize();
-	// ビュープロジェクションの初期化
-	viewProjection_.Initialize();
 
 #pragma endregion
+	for (size_t i = 0; i < _countof(viewProjection_); i++) {
+		// eye座標をランダム生成
+		eyePosX_[i] = posDist(engin);
+		eyePosY_[i] = posDist(engin);
+		eyePosZ_[i] = posDist(engin);
+
+
+		// カメラ視点座標を決定
+		viewProjection_[i].eye = { eyePosX_[i],eyePosY_[i],eyePosZ_[i]};
+
+		// カメラ注視始点座標を設定
+		viewProjection_[i].target = {0,0,0};
+
+		// カメラ上方向ベクトルを設定（右上45度指定）
+		viewProjection_[i].up = {0.0f,1.0f,0.0f};
+
+		// ビュープロジェクションの初期化
+		viewProjection_[i].Initialize();
+	}
 }
 
 void GameScene::Update() {
 
-#pragma region translation debug string
+	if (input_->TriggerKey(DIK_SPACE)) {
+		if (cameraNum < 2) {
+			cameraNum++;
+		}
+		else {
+			cameraNum = 0;
+		}
+	}
 
-	// 値を含んだ文字列
-	std::string transStrDebug = std::string("translation:(") +
-		std::to_string(translationValX_) +
-		std::string(", ") +
-		std::to_string(translationValY_) +
-		std::string(", ") +
-		std::to_string(translationValZ_) +
-		std::string(")");
+#pragma region Camera1
 
 	// デバッグテキストの表示
-	debugText_->Print(transStrDebug, 50, 50, 1.0f);
+	debugText_->SetPos(50, 50);
+	debugText_->Printf("Camera1");
+	debugText_->SetPos(50, 70);
+	debugText_->Printf("eye:(%f,%f,%f)",eyePosX_[0], eyePosY_[0], eyePosZ_[0]);
+	debugText_->SetPos(50, 90);
+	debugText_->Printf("target:(%f,%f,%f)", targetPosX_[0], targetPosY_[0], targetPosZ_[0]);
+	debugText_->SetPos(50, 110);
+	debugText_->Printf("up:(%f,%f,%f)", upPosX_[0], upPosY_[0], upPosZ_[0]);
 
 #pragma endregion
 
-#pragma region rotation debug string
-
-	// 値を含んだ文字列
-	std::string rotStrDebug = std::string("rotation:(") +
-		std::to_string(rotationValX_) +
-		std::string(", ") +
-		std::to_string(rotationValY_) +
-		std::string(", ") +
-		std::to_string(rotationValZ_) +
-		std::string(")");
+#pragma region Camera2
 
 	// デバッグテキストの表示
-	debugText_->Print(rotStrDebug, 50, 80, 1.0f);
+	debugText_->SetPos(50, 150);
+	debugText_->Printf("Camera2");
+	debugText_->SetPos(50, 170);
+	debugText_->Printf("eye:(%f,%f,%f)", eyePosX_[1], eyePosY_[1], eyePosZ_[1]);
+	debugText_->SetPos(50, 190);
+	debugText_->Printf("target:(%f,%f,%f)", targetPosX_[1], targetPosY_[1], targetPosZ_[1]);
+	debugText_->SetPos(50, 210);
+	debugText_->Printf("up:(%f,%f,%f)", upPosX_[1], upPosY_[1], upPosZ_[1]);
 
 #pragma endregion
 
-#pragma region scale debug string
-
-	// 値を含んだ文字列
-	std::string scaleStrDebug = std::string("scale:(") +
-		std::to_string(scaleValX_) +
-		std::string(", ") +
-		std::to_string(scaleValY_) +
-		std::string(", ") +
-		std::to_string(scaleValZ_) +
-		std::string(")");
+#pragma region Camera3
 
 	// デバッグテキストの表示
-	debugText_->Print(scaleStrDebug, 50, 110, 1.0f);
+	debugText_->SetPos(50, 250);
+	debugText_->Printf("Camera3");
+	debugText_->SetPos(50, 270);
+	debugText_->Printf("eye:(%f,%f,%f)", eyePosX_[2], eyePosY_[2], eyePosZ_[2]);
+	debugText_->SetPos(50, 290);
+	debugText_->Printf("target:(%f,%f,%f)", targetPosX_[2], targetPosY_[2], targetPosZ_[2]);
+	debugText_->SetPos(50, 310);
+	debugText_->Printf("up:(%f,%f,%f)", upPosX_[2], upPosY_[2], upPosZ_[2]);
 
 #pragma endregion
 }
@@ -116,7 +146,7 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
-	model_->Draw(worldTransform_, viewProjection_, textureHandle_);
+	model_->Draw(worldTransform_, viewProjection_[cameraNum], textureHandle_);
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();

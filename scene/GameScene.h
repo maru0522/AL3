@@ -16,71 +16,68 @@
 /// </summary>
 class GameScene {
 
-  public: // メンバ関数
-	/// <summary>
-	/// コンストクラタ
-	/// </summary>
-	GameScene();
+public: // メンバ関数
+  /// <summary>
+  /// コンストクラタ
+  /// </summary>
+    GameScene();
 
-	/// <summary>
-	/// デストラクタ
-	/// </summary>
-	~GameScene();
+    /// <summary>
+    /// デストラクタ
+    /// </summary>
+    ~GameScene();
 
-	/// <summary>
-	/// 初期化
-	/// </summary>
-	void Initialize();
+    /// <summary>
+    /// 初期化
+    /// </summary>
+    void Initialize();
 
-	/// <summary>
-	/// 毎フレーム処理
-	/// </summary>
-	void Update();
+    /// <summary>
+    /// 毎フレーム処理
+    /// </summary>
+    void Update();
 
-	/// <summary>
-	/// 描画
-	/// </summary>
-	void Draw();
+    /// <summary>
+    /// 描画
+    /// </summary>
+    void Draw();
 
-  private: // メンバ変数
-	DirectXCommon* dxCommon_ = nullptr;
-	Input* input_ = nullptr;
-	Audio* audio_ = nullptr;
-	DebugText* debugText_ = nullptr;
+private: // メンバ変数
+    DirectXCommon* dxCommon_ = nullptr;
+    Input* input_ = nullptr;
+    Audio* audio_ = nullptr;
+    DebugText* debugText_ = nullptr;
 
-	// テクスチャハンドル
-	uint32_t textureHandle_ = 0;
+    // テクスチャハンドル
+    uint32_t textureHandle_ = 0;
 
 #pragma region モデル部分
 
-	// 3Dモデル
-	Model* model_ = nullptr;
-	// ワールドトランスフォーム
-	WorldTransform worldTransform_;
-	// ビュープロジェクション
-	ViewProjection viewProjection_[3];
+    // 3Dモデル
+    Model* model_ = nullptr;
+    // ワールドトランスフォーム
+    WorldTransform worldTransform_;
+    // ビュープロジェクション
+    ViewProjection viewProjection_;
 
 #pragma endregion
 
 #pragma region デバッグテキスト部分
 
-	float eyePosX_[3] = {0.0f,0.0f,0.0f};
-	float eyePosY_[3] = {0.0f,0.0f,0.0f};
-	float eyePosZ_[3] = {0.0f,0.0f,0.0f};
+    float targetPosX_ = 0.0f;
+    float targetPosY_ = 0.0f;
+    float targetPosZ_ = 0.0f;
 
-	float targetPosX_[3] = {0.0f,0.0f,0.0f};
-	float targetPosY_[3] = {0.0f,0.0f,0.0f};
-	float targetPosZ_[3] = {0.0f,0.0f,0.0f};
+    float upPosX_ = 0.0f;
+    float upPosY_ = 1.0f;
+    float upPosZ_ = 0.0f;
 
-	float upPosX_[3] = { 0.0f,0.0f,0.0f };
-	float upPosY_[3] = { 1.0f,1.0f,1.0f };
-	float upPosZ_[3] = { 0.0f,0.0f,0.0f };
-
-	uint32_t cameraNum = 0;
+    uint32_t cameraAngle = 0;
+    uint32_t num = 0;
 
 #pragma endregion
 
-	/// <summary>
-	/// ゲームシーン用
-	/// </summary>
+    /// <summary>
+    /// ゲームシーン用
+    /// </summary>
 };

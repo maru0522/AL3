@@ -72,7 +72,7 @@ private: // メンバ変数
     float upPosY_ = 1.0f;
     float upPosZ_ = 0.0f;
 
-    uint32_t cameraAngle = 0;
+    float cameraAngle = 0.0f;
     uint32_t num = 0;
 
 #pragma endregion

@@ -53,12 +53,16 @@ void GameScene::Initialize() {
 
 void GameScene::Update() {
 
-	viewProjection_.eye.x = sin((cameraAngle % 360)) * 10;
-	viewProjection_.eye.z = cos((cameraAngle % 360)) * 10;
+	if (cameraAngle == 12800.0f) {
+		cameraAngle = 0;
+	}
+
+	viewProjection_.eye.x = sin(cameraAngle) * 10;
+	viewProjection_.eye.z = cos(cameraAngle) * 10;
 
 	num++;
-	if (num % 4 == 0) {
-		cameraAngle++;
+	if (num % 3 == 0) {
+		cameraAngle += 0.1;
 	}
 	viewProjection_.UpdateMatrix();
 

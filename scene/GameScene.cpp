@@ -1,6 +1,7 @@
 ﻿#include "GameScene.h"
 #include "TextureManager.h"
 #include <cassert>
+#include <Calc.h>
 
 using namespace DirectX;
 
@@ -28,7 +29,7 @@ void GameScene::Initialize() {
 		// X, Y, Z 軸周りの回転角を設定
 		worldTransform_[i].rotation_ = { 0.0f, 0.0f, 0.0f };
 		// X, Y, Z 軸周りの平行移動を設定
-		worldTransform_[i].translation_ = { 0, (float)sin(i * 36) * 10, 0.0f};
+		worldTransform_[i].translation_ = { (float)cos(i * (2 * PI_ / 10)) * 10, (float)sin(i * (2 * PI_ / 10)) * 10, 0.0f };
 		// ワールドトランスフォームの初期化
 		worldTransform_[i].Initialize();
 	}
@@ -50,6 +51,15 @@ void GameScene::Initialize() {
 }
 
 void GameScene::Update() {
+	for (size_t i = 0; i < sizeof(worldTransform_) / sizeof(worldTransform_[0]); i++) {
+		// X, Y, Z 軸周りの平行移動を設定
+		worldTransform_[i].translation_ = { Calc::RotateX((float)cos(i * (2 * PI_ / 10)) * 10,(float)sin(i * (2 * PI_ / 10)) * 10,RADIANS(angle_)),
+											Calc::RotateY((float)cos(i * (2 * PI_ / 10)) * 10,(float)sin(i * (2 * PI_ / 10)) * 10,RADIANS(angle_)),
+														  0.0f };
+		worldTransform_[i].UpdateMatrix();
+	}
+
+	angle_ += 2;
 }
 
 void GameScene::Draw() {

@@ -64,6 +64,10 @@ class GameScene {
 
 #pragma region デバッグテキスト部分
 
+	const double PI_ = 3.1415926535897932384626433832795;
+
+	float angle_ = 0.0f;
+
 	float translationValX_ = 10.0f;
 	float translationValY_ = 10.0f;
 	float translationValZ_ = 10.0f;

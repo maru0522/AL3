@@ -20,21 +20,17 @@ void GameScene::Initialize() {
 	// ファイル名を指定してテクスチャを読み込む
 	textureHandle_ = TextureManager::Load("Task1_2Resources/mario.jpg");
 
-#pragma region 上部分 [0] ~ [8]
+#pragma region 初期位置
 
-	for (size_t y = 0; y < sizeof(worldTransform_) / sizeof(worldTransform_[0]); y++) {
-		for (size_t x = 0; x < sizeof(worldTransform_[0]) / sizeof(worldTransform_[0][0]); x++) {
-			for (size_t z = 0; z < sizeof(worldTransform_[0][0]) / sizeof(worldTransform_[0][0][0]); z++) {
-			// X, Y, Z 方向のスケーリングを設定
-			worldTransform_[y][x][z].scale_ = { 1.0f, 1.0f, 1.0f };
-			// X, Y, Z 軸周りの回転角を設定
-			worldTransform_[y][x][z].rotation_ = {0.0f, 0.0f, 0.0f};
-			// X, Y, Z 軸周りの平行移動を設定
-			worldTransform_[y][x][z].translation_ = {-12.0f + x * 3, 12.0f - y * 3, 0.0f - z * 3};
-			// ワールドトランスフォームの初期化
-			worldTransform_[y][x][z].Initialize();
-		}
-		}
+	for (size_t i = 0; i < sizeof(worldTransform_) / sizeof(worldTransform_[0]); i++) {
+		// X, Y, Z 方向のスケーリングを設定
+		worldTransform_[i].scale_ = { 1.0f, 1.0f, 1.0f };
+		// X, Y, Z 軸周りの回転角を設定
+		worldTransform_[i].rotation_ = { 0.0f, 0.0f, 0.0f };
+		// X, Y, Z 軸周りの平行移動を設定
+		worldTransform_[i].translation_ = { 0, (float)sin(i * 36) * 10, 0.0f};
+		// ワールドトランスフォームの初期化
+		worldTransform_[i].Initialize();
 	}
 
 #pragma endregion
@@ -54,54 +50,6 @@ void GameScene::Initialize() {
 }
 
 void GameScene::Update() {
-
-	//#pragma region translation debug string
-	//
-	//	// 値を含んだ文字列
-	//	std::string transStrDebug = std::string("translation:(") +
-	//		std::to_string(translationValX_) +
-	//		std::string(", ") +
-	//		std::to_string(translationValY_) +
-	//		std::string(", ") +
-	//		std::to_string(translationValZ_) +
-	//		std::string(")");
-	//
-	//	// デバッグテキストの表示
-	//	debugText_->Print(transStrDebug, 50, 50, 1.0f);
-	//
-	//#pragma endregion
-
-	//#pragma region rotation debug string
-	//
-	//	// 値を含んだ文字列
-	//	std::string rotStrDebug = std::string("rotation:(") +
-	//		std::to_string(rotationValX_) +
-	//		std::string(", ") +
-	//		std::to_string(rotationValY_) +
-	//		std::string(", ") +
-	//		std::to_string(rotationValZ_) +
-	//		std::string(")");
-	//
-	//	// デバッグテキストの表示
-	//	debugText_->Print(rotStrDebug, 50, 80, 1.0f);
-	//
-	//#pragma endregion
-
-	//#pragma region scale debug string
-	//
-	//	// 値を含んだ文字列
-	//	std::string scaleStrDebug = std::string("scale:(") +
-	//		std::to_string(scaleValX_) +
-	//		std::string(", ") +
-	//		std::to_string(scaleValY_) +
-	//		std::string(", ") +
-	//		std::to_string(scaleValZ_) +
-	//		std::string(")");
-	//
-	//	// デバッグテキストの表示
-	//	debugText_->Print(scaleStrDebug, 50, 110, 1.0f);
-	//
-	//#pragma endregion
 }
 
 void GameScene::Draw() {
@@ -130,12 +78,8 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
-	for (size_t y = 0; y < sizeof(worldTransform_) / sizeof(worldTransform_[0]); y++) {
-		for (size_t x = 0; x < sizeof(worldTransform_[0]) / sizeof(worldTransform_[0][0]); x++) {
-			for (size_t z = 0; z < sizeof(worldTransform_[0][0]) / sizeof(worldTransform_[0][0][0]); z++) {
-				model_->Draw(worldTransform_[y][x][z], viewProjection_, textureHandle_);
-			}
-		}
+	for (size_t i = 0; i < sizeof(worldTransform_) / sizeof(worldTransform_[0]); i++) {
+		model_->Draw(worldTransform_[i], viewProjection_, textureHandle_);
 	}
 
 	// 3Dオブジェクト描画後処理

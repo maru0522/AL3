@@ -72,6 +72,8 @@ private: // メンバ変数
     float upPosY_ = 1.0f;
     float upPosZ_ = 0.0f;
 
+    float moveSpeed_ = 0.1f;
+
     uint32_t targetNum = 0;
 
 #pragma endregion

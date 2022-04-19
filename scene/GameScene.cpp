@@ -29,11 +29,11 @@ void GameScene::Initialize() {
 		worldTransform_[i].rotation_ = { 0.0f,0.0f,0.0f };
 		if (i % 2 == 1) {
 			// X, Y, Z 軸周りの平行移動を設定
-			worldTransform_[i].translation_ = { -5.0f + i * 5.0f,3.0f,0.0f };
+			worldTransform_[i].translation_ = { -5.0f + i * 5.0f,2.5f,0.0f };
 		}
 		else {
 			// X, Y, Z 軸周りの平行移動を設定
-			worldTransform_[i].translation_ = { -5.0f + i * 5.0f,-3.0f,0.0f };
+			worldTransform_[i].translation_ = { -5.0f + i * 5.0f,-2.5f,0.0f };
 		}
 		// ワールドトランスフォームの初期化
 		worldTransform_[i].Initialize();
@@ -47,7 +47,7 @@ void GameScene::Initialize() {
 #pragma endregion
 
 	// カメラ視点座標を決定
-	viewProjection_.eye = { 0,0,-20 };
+	viewProjection_.eye = { 0,0,-30 };
 
 	// カメラ注視始点座標を設定
 	viewProjection_.target = { targetPosX_,targetPosY_,targetPosZ_ };
@@ -68,21 +68,27 @@ void GameScene::Update() {
 		else {
 			targetNum = 0;
 		}
+	}
 
-		switch (targetNum) {
-			case 0:
-				viewProjection_.target.x = -5.0f;
-				viewProjection_.target.y = -3.0f;
-				break;
-
-			case 1:
-				viewProjection_.target.x = 0.0f;
-				viewProjection_.target.y = 3.0f;
-				break;
-			case 2:
-				viewProjection_.target.x = 5.0f;
-				viewProjection_.target.y = -3.0f;
-				break;
+	if (targetNum == 0) {
+		if (viewProjection_.target.x > -5.0f) {
+			viewProjection_.target.x -= moveSpeed_;
+		}
+	}
+	else if (targetNum == 1) {
+		if (viewProjection_.target.x < 0.0f) {
+			viewProjection_.target.x += moveSpeed_;
+		}
+		if (viewProjection_.target.y < 2.4f) {
+			viewProjection_.target.y += moveSpeed_;
+		}
+	}
+	else if (targetNum == 2) {
+		if (viewProjection_.target.x < 5.0f) {
+			viewProjection_.target.x += moveSpeed_;
+		}
+		if (viewProjection_.target.y > -2.5f) {
+			viewProjection_.target.y -= moveSpeed_;
 		}
 	}
 

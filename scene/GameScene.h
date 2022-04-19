@@ -56,7 +56,7 @@ private: // メンバ変数
     // 3Dモデル
     Model* model_ = nullptr;
     // ワールドトランスフォーム
-    WorldTransform worldTransform_;
+    WorldTransform worldTransform_[3];
     // ビュープロジェクション
     ViewProjection viewProjection_;
 
@@ -64,16 +64,15 @@ private: // メンバ変数
 
 #pragma region デバッグテキスト部分
 
-    float targetPosX_ = 0.0f;
-    float targetPosY_ = 0.0f;
+    float targetPosX_ = -5.0f;
+    float targetPosY_ = -3.0f;
     float targetPosZ_ = 0.0f;
 
     float upPosX_ = 0.0f;
     float upPosY_ = 1.0f;
     float upPosZ_ = 0.0f;
 
-    float cameraAngle = 0.0f;
-    uint32_t num = 0;
+    uint32_t targetNum = 0;
 
 #pragma endregion
 

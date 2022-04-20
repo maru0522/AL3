@@ -24,16 +24,14 @@ void GameScene::Initialize() {
 
 	for (size_t y = 0; y < sizeof(worldTransform_) / sizeof(worldTransform_[0]); y++) {
 		for (size_t x = 0; x < sizeof(worldTransform_[0]) / sizeof(worldTransform_[0][0]); x++) {
-			for (size_t z = 0; z < sizeof(worldTransform_[0][0]) / sizeof(worldTransform_[0][0][0]); z++) {
 			// X, Y, Z 方向のスケーリングを設定
-			worldTransform_[y][x][z].scale_ = { 1.0f, 1.0f, 1.0f };
+			worldTransform_[y][x].scale_ = { 1.0f, 1.0f, 1.0f };
 			// X, Y, Z 軸周りの回転角を設定
-			worldTransform_[y][x][z].rotation_ = {0.0f, 0.0f, 0.0f};
+			worldTransform_[y][x].rotation_ = {0.0f, 0.0f, 0.0f};
 			// X, Y, Z 軸周りの平行移動を設定
-			worldTransform_[y][x][z].translation_ = {-12.0f + x * 3, 12.0f - y * 3, 0.0f - z * 3};
+			worldTransform_[y][x].translation_ = {-12.0f + x * 3, 12.0f - y * 3, 0.0f};
 			// ワールドトランスフォームの初期化
-			worldTransform_[y][x][z].Initialize();
-		}
+			worldTransform_[y][x].Initialize();
 		}
 	}
 
@@ -47,6 +45,9 @@ void GameScene::Initialize() {
 	// 3Dモデルの生成
 	model_ = Model::Create();
 
+	// カメラ垂直方向視野角を設定
+	viewProjection_.fovAngleY = XMConvertToRadians(45.0f);
+
 	// ビュープロジェクションの初期化
 	viewProjection_.Initialize();
 
@@ -54,54 +55,41 @@ void GameScene::Initialize() {
 }
 
 void GameScene::Update() {
+	if (input_->PushKey(DIK_W)) {
+		viewProjection_.target.y += 0.1f;
+	}
+	if (input_->PushKey(DIK_S)) {
+		viewProjection_.target.y -= 0.1f;
+	}
+	if (input_->PushKey(DIK_A)) {
+		viewProjection_.target.x -= 0.1f;
+	}
+	if (input_->PushKey(DIK_D)) {
+		viewProjection_.target.x += 0.1f;
+	}
 
-	//#pragma region translation debug string
-	//
-	//	// 値を含んだ文字列
-	//	std::string transStrDebug = std::string("translation:(") +
-	//		std::to_string(translationValX_) +
-	//		std::string(", ") +
-	//		std::to_string(translationValY_) +
-	//		std::string(", ") +
-	//		std::to_string(translationValZ_) +
-	//		std::string(")");
-	//
-	//	// デバッグテキストの表示
-	//	debugText_->Print(transStrDebug, 50, 50, 1.0f);
-	//
-	//#pragma endregion
+	if (input_->PushKey(DIK_UP)) {
+		viewProjection_.fovAngleY -= 0.01f;
+		viewProjection_.fovAngleY = max(viewProjection_.fovAngleY, 0.01f);
+	}
+	else if (input_->PushKey(DIK_DOWN)) {
+		viewProjection_.fovAngleY += 0.01f;
+		viewProjection_.fovAngleY = min(viewProjection_.fovAngleY, XM_PI);
+	}
+	
+	viewProjection_.UpdateMatrix();
 
-	//#pragma region rotation debug string
-	//
-	//	// 値を含んだ文字列
-	//	std::string rotStrDebug = std::string("rotation:(") +
-	//		std::to_string(rotationValX_) +
-	//		std::string(", ") +
-	//		std::to_string(rotationValY_) +
-	//		std::string(", ") +
-	//		std::to_string(rotationValZ_) +
-	//		std::string(")");
-	//
-	//	// デバッグテキストの表示
-	//	debugText_->Print(rotStrDebug, 50, 80, 1.0f);
-	//
-	//#pragma endregion
-
-	//#pragma region scale debug string
-	//
-	//	// 値を含んだ文字列
-	//	std::string scaleStrDebug = std::string("scale:(") +
-	//		std::to_string(scaleValX_) +
-	//		std::string(", ") +
-	//		std::to_string(scaleValY_) +
-	//		std::string(", ") +
-	//		std::to_string(scaleValZ_) +
-	//		std::string(")");
-	//
-	//	// デバッグテキストの表示
-	//	debugText_->Print(scaleStrDebug, 50, 110, 1.0f);
-	//
-	//#pragma endregion
+	// デバッグテキスト
+	debugText_->SetPos(50, 50);
+	debugText_->Printf("eye:(%f,%f,%f)", viewProjection_.eye.x, viewProjection_.eye.y, viewProjection_.eye.z);
+	debugText_->SetPos(50, 70);
+	debugText_->Printf("target:(%f,%f,%f)", viewProjection_.target.x, viewProjection_.target.y, viewProjection_.target.z);
+	debugText_->SetPos(50, 90);
+	debugText_->Printf("up:(%f,%f,%f)", viewProjection_.up.x, viewProjection_.up.y, viewProjection_.up.z);
+	debugText_->SetPos(50, 110);
+	debugText_->Printf("fovAngleY(Degree):(%f)", XMConvertToDegrees(viewProjection_.fovAngleY));
+	debugText_->SetPos(50, 130);
+	debugText_->Printf("nearZ:(%f)", viewProjection_.nearZ);
 }
 
 void GameScene::Draw() {
@@ -132,9 +120,7 @@ void GameScene::Draw() {
 	/// </summary>
 	for (size_t y = 0; y < sizeof(worldTransform_) / sizeof(worldTransform_[0]); y++) {
 		for (size_t x = 0; x < sizeof(worldTransform_[0]) / sizeof(worldTransform_[0][0]); x++) {
-			for (size_t z = 0; z < sizeof(worldTransform_[0][0]) / sizeof(worldTransform_[0][0][0]); z++) {
-				model_->Draw(worldTransform_[y][x][z], viewProjection_, textureHandle_);
-			}
+				model_->Draw(worldTransform_[y][x], viewProjection_, textureHandle_);
 		}
 	}
 

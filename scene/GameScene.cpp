@@ -253,32 +253,33 @@ void GameScene::Update() {
 	}
 
 
-	// 上半身回転処理
+	// 全身回転処理
 	{
-		// 上半身の回転速度[ラジアン/frame]
-		const float kChestRotSpeed = 0.05f;
+		// 全身の回転速度[ラジアン/frame]
+		const float kRootRotSpeed = 0.05f;
 
 		// 押した方向で移動ベクトルを変更
-		if (input_->PushKey(DIK_U)) {
-			worldTransform_[PartId::Chest].rotation_.y -= kChestRotSpeed;
+		if (input_->PushKey(DIK_A)) {
+			worldTransform_[PartId::Root].rotation_.y -= kRootRotSpeed;
 		}
-		else if (input_->PushKey(DIK_I)) {
-			worldTransform_[PartId::Chest].rotation_.y += kChestRotSpeed;
+		else if (input_->PushKey(DIK_D)) {
+			worldTransform_[PartId::Root].rotation_.y += kRootRotSpeed;
 		}
 	}
 
-	// 下半身回転処理
+	// 常に回転し続ける腕と足
 	{
-		// 下半身の回転速度[ラジアン/frame]
-		const float kHipRotSpeed = 0.05f;
+		// 腕と足の回転速度[ラジアン/frame]
+		const float kArmRotSpeed = 0.1f;
+		const float kLegRotSpeed = 0.1f;
 
-		// 押した方向で移動ベクトルを変更
-		if (input_->PushKey(DIK_J)) {
-			worldTransform_[PartId::Hip].rotation_.y -= kHipRotSpeed;
-		}
-		else if(input_->PushKey(DIK_K)) {
-			worldTransform_[PartId::Hip].rotation_.y += kHipRotSpeed;
-		}
+		// 腕
+		worldTransform_[PartId::ArmL].rotation_.x -= kArmRotSpeed;
+		worldTransform_[PartId::ArmR].rotation_.x += kArmRotSpeed;
+
+		// 足
+		worldTransform_[PartId::LegL].rotation_.x += kLegRotSpeed;
+		worldTransform_[PartId::LegR].rotation_.x -= kLegRotSpeed;
 	}
 
 	worldTransform_[PartId::Root].UpdateMatrix();

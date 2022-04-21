@@ -8,6 +8,7 @@ using namespace DirectX;
 GameScene::GameScene() {}
 
 GameScene::~GameScene() {
+	//消去
 	delete model_;
 	delete reticleSprite_;
 	delete scopeSprite_;

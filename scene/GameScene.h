@@ -60,13 +60,19 @@ class GameScene {
 	uint32_t textureHandle_ = 0;
 	// レティクル
 	uint32_t reticle_ = 0;
+	// スコープ
+	uint32_t scope_ = 0;
 
 
 	// 3Dモデル
 	Model* model_ = nullptr;
 
 	// レティクルのスプライト
-	Sprite* sprite_ = nullptr;
+	Sprite* reticleSprite_ = nullptr;
+
+	// スコープのスプライト
+	Sprite* scopeSprite_ = nullptr;
+
 
 
 	// ワールドトランスフォーム

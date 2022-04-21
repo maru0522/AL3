@@ -9,7 +9,8 @@ GameScene::GameScene() {}
 
 GameScene::~GameScene() {
 	delete model_;
-	delete sprite_;
+	delete reticleSprite_;
+	delete scopeSprite_;
 }
 
 void GameScene::Initialize() {
@@ -22,6 +23,7 @@ void GameScene::Initialize() {
 	// ファイル名を指定してテクスチャを読み込む
 	textureHandle_ = TextureManager::Load("Task1_2Resources/mario.jpg");
 	reticle_ = TextureManager::Load("Task1_2Resources/reticle.png");
+	scope_ = TextureManager::Load("Task1_2Resources/scope.png");
 
 
 	// 乱数シード生成器
@@ -56,7 +58,9 @@ void GameScene::Initialize() {
 	// 3Dモデルの生成
 	model_ = Model::Create();
 	// レティクルスプライトの生成
-	sprite_ = Sprite::Create(reticle_, { 550,270 });
+	reticleSprite_ = Sprite::Create(reticle_, { 550,270 });
+	// スコープスプライトの生成
+	scopeSprite_ = Sprite::Create(scope_, { 0,0 });
 
 
 	// カメラ垂直方向視野角を設定
@@ -85,18 +89,26 @@ void GameScene::Update() {
 	if (input_->TriggerKey(DIK_SPACE)) {
 		if (scope == Near_) {
 			scope = Far_;
+			viewProjection_.fovAngleY = XMConvertToRadians(90.0f);
 		}
 		else {
 			scope = Near_;
+			viewProjection_.fovAngleY = XMConvertToRadians(35.0f);
 		}
 	}
 
 
 	if (scope == Near_) {
-		viewProjection_.fovAngleY = XMConvertToRadians(20.0f);
-	}
-	if (scope == Far_) {
-		viewProjection_.fovAngleY = XMConvertToRadians(40.0f);
+		if (input_->PushKey(DIK_W)) {
+			if (viewProjection_.fovAngleY > XMConvertToRadians(16.0f)) {
+				viewProjection_.fovAngleY -= 0.01f;
+			}
+		}
+		else if (input_->PushKey(DIK_S)) {
+			if (viewProjection_.fovAngleY < XMConvertToRadians(35.0f)) {
+				viewProjection_.fovAngleY += 0.01f;
+			}
+		}
 	}
 
 
@@ -159,7 +171,8 @@ void GameScene::Draw() {
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
 	if (scope == Near_) {
-		sprite_->Draw();
+		reticleSprite_->Draw();
+		scopeSprite_->Draw();
 	}
 
 	// デバッグテキストの描画

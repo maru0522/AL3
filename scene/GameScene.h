@@ -82,8 +82,8 @@ private: // メンバ変数
 
 	bool isArmLRot = true;
 	bool isArmRRot = false;
-	bool isLegLRot = true;
-	bool isLegRRot = false;
+	bool isLegLRot = false;
+	bool isLegRRot = true;
 
 
 	/// <summary>

@@ -79,6 +79,13 @@ private: // メンバ変数
 	//　ビュープロジェクション
 	ViewProjection viewProjection_;
 
+
+	bool isArmLRot = true;
+	bool isArmRRot = false;
+	bool isLegLRot = true;
+	bool isLegRRot = false;
+
+
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>

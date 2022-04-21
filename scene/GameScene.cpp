@@ -37,6 +37,7 @@ void GameScene::Initialize() {
 
 	// ワールドトランスフォームの初期化
 	// キャラクターの大元
+	worldTransform_[PartId::Root].rotation_ = { 0, XMConvertToRadians(30.0f), 0 };
 	worldTransform_[PartId::Root].Initialize();
 	// 脊椎
 	worldTransform_[PartId::Spine].translation_ = { 0, 3, 0 };
@@ -76,7 +77,7 @@ void GameScene::Initialize() {
 
 
 	// カメラ始点座標を設定
-	viewProjection_.eye = { 0,0,-50 };
+	viewProjection_.eye = { 0,0,-30 };
 
 
 	// カメラ垂直方向視野角を設定
@@ -270,16 +271,73 @@ void GameScene::Update() {
 	// 常に回転し続ける腕と足
 	{
 		// 腕と足の回転速度[ラジアン/frame]
-		const float kArmRotSpeed = 0.1f;
-		const float kLegRotSpeed = 0.1f;
+		const float kArmRotSpeed = 0.05f;
+		const float kLegRotSpeed = 0.05f;
+		const float rotateLimit = 1.0f;
 
-		// 腕
-		worldTransform_[PartId::ArmL].rotation_.x -= kArmRotSpeed;
-		worldTransform_[PartId::ArmR].rotation_.x += kArmRotSpeed;
+		// 左腕
+		{
+			if (isArmLRot) {
+				worldTransform_[PartId::ArmL].rotation_.x += kArmRotSpeed;
+				if (worldTransform_[PartId::ArmL].rotation_.x >= rotateLimit) {
+					isArmLRot = false;
+				}
+			}
+			else {
+				worldTransform_[PartId::ArmL].rotation_.x -= kArmRotSpeed;
+				if (worldTransform_[PartId::ArmL].rotation_.x <= -rotateLimit) {
+					isArmLRot = true;
+				}
+			}
+		}
 
-		// 足
-		worldTransform_[PartId::LegL].rotation_.x += kLegRotSpeed;
-		worldTransform_[PartId::LegR].rotation_.x -= kLegRotSpeed;
+		// 右腕
+		{
+			if (isArmRRot) {
+				worldTransform_[PartId::ArmR].rotation_.x += kArmRotSpeed;
+				if (worldTransform_[PartId::ArmR].rotation_.x >= rotateLimit) {
+					isArmRRot = false;
+				}
+			}
+			else {
+				worldTransform_[PartId::ArmR].rotation_.x -= kArmRotSpeed;
+				if (worldTransform_[PartId::ArmR].rotation_.x <= -rotateLimit) {
+					isArmRRot = true;
+				}
+			}
+		}
+
+		// 左足
+		{
+			if (isLegLRot) {
+				worldTransform_[PartId::LegL].rotation_.x += kArmRotSpeed;
+				if (worldTransform_[PartId::LegL].rotation_.x >= rotateLimit) {
+					isLegLRot = false;
+				}
+			}
+			else {
+				worldTransform_[PartId::LegL].rotation_.x -= kArmRotSpeed;
+				if (worldTransform_[PartId::LegL].rotation_.x <= -rotateLimit) {
+					isLegLRot = true;
+				}
+			}
+		}
+
+		// 右足
+		{
+			if (isLegRRot) {
+				worldTransform_[PartId::LegR].rotation_.x += kArmRotSpeed;
+				if (worldTransform_[PartId::LegR].rotation_.x >= rotateLimit) {
+					isLegRRot = false;
+				}
+			}
+			else {
+				worldTransform_[PartId::LegR].rotation_.x -= kArmRotSpeed;
+				if (worldTransform_[PartId::LegR].rotation_.x <= -rotateLimit) {
+					isLegRRot = true;
+				}
+			}
+		}
 	}
 
 	worldTransform_[PartId::Root].UpdateMatrix();

@@ -9,6 +9,7 @@ GameScene::GameScene() {}
 
 GameScene::~GameScene() {
 	delete model_;
+	delete sprite_;
 }
 
 void GameScene::Initialize() {
@@ -20,6 +21,7 @@ void GameScene::Initialize() {
 
 	// ファイル名を指定してテクスチャを読み込む
 	textureHandle_ = TextureManager::Load("Task1_2Resources/mario.jpg");
+	reticle_ = TextureManager::Load("Task1_2Resources/reticle.png");
 
 
 	// 乱数シード生成器
@@ -53,6 +55,9 @@ void GameScene::Initialize() {
 
 	// 3Dモデルの生成
 	model_ = Model::Create();
+	// レティクルスプライトの生成
+	sprite_ = Sprite::Create(reticle_, { 550,270 });
+
 
 	// カメラ垂直方向視野角を設定
 	viewProjection_.fovAngleY = XMConvertToRadians(45.0f);
@@ -85,6 +90,15 @@ void GameScene::Update() {
 			scope = Near_;
 		}
 	}
+
+
+	if (scope == Near_) {
+		viewProjection_.fovAngleY = XMConvertToRadians(20.0f);
+	}
+	if (scope == Far_) {
+		viewProjection_.fovAngleY = XMConvertToRadians(40.0f);
+	}
+
 
 
 	viewProjection_.UpdateMatrix();
@@ -144,6 +158,9 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
+	if (scope == Near_) {
+		sprite_->Draw();
+	}
 
 	// デバッグテキストの描画
 	debugText_->DrawAll(commandList);

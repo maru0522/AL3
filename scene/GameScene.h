@@ -18,8 +18,8 @@ class GameScene {
   public:
 	  //スコープ
 	  enum scopeStatus {
-		  Near_,			//近い
-		  Far_,			//遠い
+		  Near_,			//近く見える
+		  Far_,				//遠く見える
 	  };
 
 
@@ -58,10 +58,16 @@ class GameScene {
 
 	// テクスチャハンドル
 	uint32_t textureHandle_ = 0;
+	// レティクル
+	uint32_t reticle_ = 0;
 
 
 	// 3Dモデル
 	Model* model_ = nullptr;
+
+	// レティクルのスプライト
+	Sprite* sprite_ = nullptr;
+
 
 	// ワールドトランスフォーム
 	WorldTransform worldTransform_[100];

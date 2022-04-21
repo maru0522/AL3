@@ -36,11 +36,11 @@ void GameScene::Initialize() {
 
 	for (size_t i = 0; i < _countof(worldTransform_); i++) {
 		// X, Y, Z 方向のスケーリングを設定
-		worldTransform_[i].scale_ = {1.0f,1.0f,1.0f };
+		worldTransform_[i].scale_ = { 1.0f,1.0f,1.0f };
 		// X, Y, Z 軸周りの回転角を設定
-		worldTransform_[i].rotation_ = {rotDist(engin),rotDist(engin),rotDist(engin) };
+		worldTransform_[i].rotation_ = { rotDist(engin),rotDist(engin),rotDist(engin) };
 		// X, Y, Z 軸周りの平行移動を設定
-		worldTransform_[i].translation_ = {posDist(engin),posDist(engin),posDist(engin) };
+		worldTransform_[i].translation_ = { posDist(engin),posDist(engin),posDist(engin) };
 
 
 		// ワールドトランスフォームの初期化
@@ -82,21 +82,23 @@ void GameScene::Update() {
 		viewProjection_.target.x += 0.1f;
 	}
 
-	if (input_->TriggerKey(DIK_SPACE)) {
-		if (scope == Near_) {
-			scope = Far_;
-		}
-		else {
-			scope = Near_;
-		}
+	if (input_->PushKey(DIK_SPACE)) {
+		scope = Near_;
+	}
+	else {
+		scope = Far_;
 	}
 
 
 	if (scope == Near_) {
-		viewProjection_.fovAngleY = XMConvertToRadians(20.0f);
+		if (viewProjection_.fovAngleY > XMConvertToRadians(20.0f)) {
+			viewProjection_.fovAngleY -= 0.01f;
+		}
 	}
 	if (scope == Far_) {
-		viewProjection_.fovAngleY = XMConvertToRadians(40.0f);
+		if (viewProjection_.fovAngleY < XMConvertToRadians(40.0f)) {
+			viewProjection_.fovAngleY += 0.01f;
+		}
 	}
 
 

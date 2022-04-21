@@ -15,6 +15,14 @@
 /// ゲームシーン
 /// </summary>
 class GameScene {
+  public:
+	  //スコープ
+	  enum scopeStatus {
+		  Near_,			//近い
+		  Far_,			//遠い
+	  };
+
+
 
   public: // メンバ関数
 	/// <summary>
@@ -63,6 +71,8 @@ class GameScene {
 
 	//　ビュープロジェクション
 	ViewProjection viewProjection_;
+
+	uint32_t scope = Far_;
 
 	/// <summary>
 	/// ゲームシーン用

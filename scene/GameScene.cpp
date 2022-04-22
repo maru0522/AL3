@@ -56,10 +56,19 @@ void GameScene::Initialize() {
 	worldTransform_[PartId::ArmL].translation_ = { -3,0,0 };
 	worldTransform_[PartId::ArmL].parent_ = &worldTransform_[PartId::Chest];
 	worldTransform_[PartId::ArmL].Initialize();
+	// 左腕2
+	worldTransform_[PartId::ArmL2].translation_ = { 0,-2,0 };
+	worldTransform_[PartId::ArmL2].parent_ = &worldTransform_[PartId::ArmL];
+	worldTransform_[PartId::ArmL2].Initialize();
 	// 右腕
 	worldTransform_[PartId::ArmR].translation_ = { 3,0,0 };
 	worldTransform_[PartId::ArmR].parent_ = &worldTransform_[PartId::Chest];
 	worldTransform_[PartId::ArmR].Initialize();
+	// 右腕2
+	worldTransform_[PartId::ArmR2].translation_ = { 0,-2,0 };
+	worldTransform_[PartId::ArmR2].parent_ = &worldTransform_[PartId::ArmR];
+	worldTransform_[PartId::ArmR2].Initialize();
+
 	// 下半身
 	// 尻
 	worldTransform_[PartId::Hip].translation_ = { 0,-3,0 };
@@ -69,10 +78,18 @@ void GameScene::Initialize() {
 	worldTransform_[PartId::LegL].translation_ = { -3,-3,0 };
 	worldTransform_[PartId::LegL].parent_ = &worldTransform_[PartId::Hip];
 	worldTransform_[PartId::LegL].Initialize();
+	// 左足2
+	worldTransform_[PartId::LegL2].translation_ = { 0,-2,0 };
+	worldTransform_[PartId::LegL2].parent_ = &worldTransform_[PartId::LegL];
+	worldTransform_[PartId::LegL2].Initialize();
 	// 右足
 	worldTransform_[PartId::LegR].translation_ = { 3,-3,0 };
 	worldTransform_[PartId::LegR].parent_ = &worldTransform_[PartId::Hip];
 	worldTransform_[PartId::LegR].Initialize();
+	// 右足2
+	worldTransform_[PartId::LegR2].translation_ = { 0,-2,0 };
+	worldTransform_[PartId::LegR2].parent_ = &worldTransform_[PartId::LegR];
+	worldTransform_[PartId::LegR2].Initialize();
 
 
 
@@ -253,6 +270,20 @@ void GameScene::Update() {
 						   worldTransform_[PartId::Root].translation_.z += move.z);
 	}
 
+	// ジャンプ処理
+	if (input_->TriggerKey(DIK_SPACE)) {
+		isJump = true;
+	}
+
+	if (isJump) {
+		worldTransform_[PartId::Root].translation_.y += 5;
+			isJump = false;
+	}
+
+	if (worldTransform_[PartId::Root].translation_.y > 0) {
+		worldTransform_[PartId::Root].translation_.y -= 0.25f;
+	}
+
 
 	// 全身回転処理
 	{
@@ -275,66 +306,130 @@ void GameScene::Update() {
 		const float kLegRotSpeed = 0.05f;
 		const float rotateLimit = 1.0f;
 
-		// 左腕
-		{
-			if (isArmLRot) {
-				worldTransform_[PartId::ArmL].rotation_.x += kArmRotSpeed;
-				if (worldTransform_[PartId::ArmL].rotation_.x >= rotateLimit) {
-					isArmLRot = false;
+		if (input_->PushKey(DIK_W)) {
+			// 左腕 -----------------------------------------------------------------
+			// 左シフトキー入力時速度二倍
+			if (input_->PushKey(DIK_LSHIFT)) {
+				if (isArmLRot) {
+					worldTransform_[PartId::ArmL].rotation_.x += (2 * kArmRotSpeed);
+					if (worldTransform_[PartId::ArmL].rotation_.x >= rotateLimit) {
+						isArmLRot = false;
+					}
+				}
+				else {
+					worldTransform_[PartId::ArmL].rotation_.x -= (2 * kArmRotSpeed);
+					if (worldTransform_[PartId::ArmL].rotation_.x <= -rotateLimit) {
+						isArmLRot = true;
+					}
 				}
 			}
+			// 入力していない場合通常速度
 			else {
-				worldTransform_[PartId::ArmL].rotation_.x -= kArmRotSpeed;
-				if (worldTransform_[PartId::ArmL].rotation_.x <= -rotateLimit) {
-					isArmLRot = true;
+				if (isArmLRot) {
+					worldTransform_[PartId::ArmL].rotation_.x += kArmRotSpeed;
+					if (worldTransform_[PartId::ArmL].rotation_.x >= rotateLimit) {
+						isArmLRot = false;
+					}
+				}
+				else {
+					worldTransform_[PartId::ArmL].rotation_.x -= kArmRotSpeed;
+					if (worldTransform_[PartId::ArmL].rotation_.x <= -rotateLimit) {
+						isArmLRot = true;
+					}
 				}
 			}
-		}
 
-		// 右腕
-		{
-			if (isArmRRot) {
-				worldTransform_[PartId::ArmR].rotation_.x += kArmRotSpeed;
-				if (worldTransform_[PartId::ArmR].rotation_.x >= rotateLimit) {
-					isArmRRot = false;
+			// 右腕 -----------------------------------------------------------------
+			// 左シフトキー入力時速度二倍
+			if (input_->PushKey(DIK_LSHIFT)) {
+				if (isArmRRot) {
+					worldTransform_[PartId::ArmR].rotation_.x += (2 * kArmRotSpeed);
+					if (worldTransform_[PartId::ArmR].rotation_.x >= rotateLimit) {
+						isArmRRot = false;
+					}
+				}
+				else {
+					worldTransform_[PartId::ArmR].rotation_.x -= (2 * kArmRotSpeed);
+					if (worldTransform_[PartId::ArmR].rotation_.x <= -rotateLimit) {
+						isArmRRot = true;
+					}
 				}
 			}
+			// 入力していない場合通常速度
 			else {
-				worldTransform_[PartId::ArmR].rotation_.x -= kArmRotSpeed;
-				if (worldTransform_[PartId::ArmR].rotation_.x <= -rotateLimit) {
-					isArmRRot = true;
+				if (isArmRRot) {
+					worldTransform_[PartId::ArmR].rotation_.x += kArmRotSpeed;
+					if (worldTransform_[PartId::ArmR].rotation_.x >= rotateLimit) {
+						isArmRRot = false;
+					}
+				}
+				else {
+					worldTransform_[PartId::ArmR].rotation_.x -= kArmRotSpeed;
+					if (worldTransform_[PartId::ArmR].rotation_.x <= -rotateLimit) {
+						isArmRRot = true;
+					}
 				}
 			}
-		}
 
-		// 左足
-		{
-			if (isLegLRot) {
-				worldTransform_[PartId::LegL].rotation_.x += kArmRotSpeed;
-				if (worldTransform_[PartId::LegL].rotation_.x >= rotateLimit) {
-					isLegLRot = false;
+			// 左足 -----------------------------------------------------------------
+			// 左シフトキー入力時速度二倍
+			if (input_->PushKey(DIK_LSHIFT)) {
+				if (isLegLRot) {
+					worldTransform_[PartId::LegL].rotation_.x += (2 * kArmRotSpeed);
+					if (worldTransform_[PartId::LegL].rotation_.x >= rotateLimit) {
+						isLegLRot = false;
+					}
+				}
+				else {
+					worldTransform_[PartId::LegL].rotation_.x -= (2 * kArmRotSpeed);
+					if (worldTransform_[PartId::LegL].rotation_.x <= -rotateLimit) {
+						isLegLRot = true;
+					}
 				}
 			}
 			else {
-				worldTransform_[PartId::LegL].rotation_.x -= kArmRotSpeed;
-				if (worldTransform_[PartId::LegL].rotation_.x <= -rotateLimit) {
-					isLegLRot = true;
+				if (isLegLRot) {
+					worldTransform_[PartId::LegL].rotation_.x += kArmRotSpeed;
+					if (worldTransform_[PartId::LegL].rotation_.x >= rotateLimit) {
+						isLegLRot = false;
+					}
+				}
+				else {
+					worldTransform_[PartId::LegL].rotation_.x -= kArmRotSpeed;
+					if (worldTransform_[PartId::LegL].rotation_.x <= -rotateLimit) {
+						isLegLRot = true;
+					}
 				}
 			}
-		}
 
-		// 右足
-		{
-			if (isLegRRot) {
-				worldTransform_[PartId::LegR].rotation_.x += kArmRotSpeed;
-				if (worldTransform_[PartId::LegR].rotation_.x >= rotateLimit) {
-					isLegRRot = false;
+			// 右足 -----------------------------------------------------------------
+			// 左シフトキー入力時速度二倍
+			if (input_->PushKey(DIK_LSHIFT)) {
+				if (isLegRRot) {
+					worldTransform_[PartId::LegR].rotation_.x += (2 * kArmRotSpeed);
+					if (worldTransform_[PartId::LegR].rotation_.x >= rotateLimit) {
+						isLegRRot = false;
+					}
+				}
+				else {
+					worldTransform_[PartId::LegR].rotation_.x -= (2 * kArmRotSpeed);
+					if (worldTransform_[PartId::LegR].rotation_.x <= -rotateLimit) {
+						isLegRRot = true;
+					}
 				}
 			}
 			else {
-				worldTransform_[PartId::LegR].rotation_.x -= kArmRotSpeed;
-				if (worldTransform_[PartId::LegR].rotation_.x <= -rotateLimit) {
-					isLegRRot = true;
+				if (isLegRRot) {
+					worldTransform_[PartId::LegR].rotation_.x += kArmRotSpeed;
+					if (worldTransform_[PartId::LegR].rotation_.x >= rotateLimit) {
+						isLegRRot = false;
+					}
+				}
+				else {
+					worldTransform_[PartId::LegR].rotation_.x -= kArmRotSpeed;
+					if (worldTransform_[PartId::LegR].rotation_.x <= -rotateLimit) {
+						isLegRRot = true;
+					}
 				}
 			}
 		}
@@ -345,10 +440,14 @@ void GameScene::Update() {
 	worldTransform_[PartId::Chest].UpdateMatrix();
 	worldTransform_[PartId::Head].UpdateMatrix();
 	worldTransform_[PartId::ArmL].UpdateMatrix();
+	worldTransform_[PartId::ArmL2].UpdateMatrix();
 	worldTransform_[PartId::ArmR].UpdateMatrix();
+	worldTransform_[PartId::ArmR2].UpdateMatrix();
 	worldTransform_[PartId::Hip].UpdateMatrix();
 	worldTransform_[PartId::LegL].UpdateMatrix();
+	worldTransform_[PartId::LegL2].UpdateMatrix();
 	worldTransform_[PartId::LegR].UpdateMatrix();
+	worldTransform_[PartId::LegR2].UpdateMatrix();
 }
 
 void GameScene::Draw() {
@@ -383,10 +482,14 @@ void GameScene::Draw() {
 	model_->Draw(worldTransform_[PartId::Chest], viewProjection_, textureHandle_);
 	model_->Draw(worldTransform_[PartId::Head], viewProjection_, textureHandle_);
 	model_->Draw(worldTransform_[PartId::ArmL], viewProjection_, textureHandle_);
+	model_->Draw(worldTransform_[PartId::ArmL2], viewProjection_, textureHandle_);
 	model_->Draw(worldTransform_[PartId::ArmR], viewProjection_, textureHandle_);
+	model_->Draw(worldTransform_[PartId::ArmR2], viewProjection_, textureHandle_);
 	model_->Draw(worldTransform_[PartId::Hip], viewProjection_, textureHandle_);
 	model_->Draw(worldTransform_[PartId::LegL], viewProjection_, textureHandle_);
+	model_->Draw(worldTransform_[PartId::LegL2], viewProjection_, textureHandle_);
 	model_->Draw(worldTransform_[PartId::LegR], viewProjection_, textureHandle_);
+	model_->Draw(worldTransform_[PartId::LegR2], viewProjection_, textureHandle_);
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
